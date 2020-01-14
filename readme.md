@@ -25,7 +25,7 @@ const chainHead = await lotusRPC.request('ChainHead')
 
 This library is simply a wrapper around Lotus' jsonrpc. To send requests, follow this pattern:
 
-lotusRPC.request(<method name>, arg1, arg2....etc) where the "methodName" corresponds to each available jsonrpc method (found [here]([Lotus jsonrpc api](https://github.com/filecoin-project/lotus/blob/master/api/api_full.go))). After the method name, each argument is passed to Lotus' jsonrpc in the same order.
+lotusRPC.request(rpcmethod, arg1, arg2....etc) where the "methodName" corresponds to each available jsonrpc method (found [here](https://github.com/filecoin-project/lotus/blob/master/api/api_full.go)). After the method name, each argument is passed to Lotus' jsonrpc in the same order.
 
 For example, the `WalletBalance` jsonrpc method takes a single argument, "address". Therefore, we should structure the request like:
 
@@ -39,12 +39,16 @@ const balance = await lotusRPC.request('WalletBalance', address)
 Several jsonrpc methods take `Cid` as arguments. We need to structure a cid as:
 
 ```js
-{ '/': 'bafy2bzacedavr434vvbck3nkowrffk2x67lgl7kfujlw3lyj2zjvmihn5rf7i' }
+const cid = {
+  '/': 'bafy2bzacedavr434vvbck3nkowrffk2x67lgl7kfujlw3lyj2zjvmihn5rf7i',
+}
+
+const message = await lotusRPC.request('ChainGetMessage', cid)
 ```
 
 ## CORS
 
-If you're planning on using this library in a web browser and a raw Lotus node, you will run into CORS issues. There are a couple ways around this:
+If you're planning on using this library in a web browser communicating with a raw Lotus node, you will run into CORS issues. There are a couple ways around this:
 
 1. Wrap your Lotus node in a proxy server that explicitly handles CORS requests. We're working on publishing a proxy server to help unstuck anyone who needs to take this route.
 2. Wrap your web browser in a "forwarder API", which is responsible for sending / receiving information from the Lotus node (essentially sending browser requests to a remote server to make the request to Lotus).
