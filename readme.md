@@ -14,7 +14,7 @@ const LotusRPCEngine = require('@openworklabs/lotus-jsonrpc-engine')
 const lotusJWT = 'aaaaaaaa.bbbbbbbbbbbb.i_ZZZZZZ-3xYYYYYY'
 
 const lotusRPC = new LotusRpcEngine({
-  apiAddress: 'https://lotus-dev.temporal.cloud/rpc/v0',
+  apiAddress: 'http://127.0.0.1:1234/rpc/v0',
   token: lotusJWT,
 })
 
