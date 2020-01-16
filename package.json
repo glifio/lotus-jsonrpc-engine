@@ -1,6 +1,6 @@
 {
   "name": "@openworklabs/lotus-jsonrpc-engine",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "a convenience library for interacting with the Lotus jsonrpc",
   "main": "./dist/index.js",
   "browser": "./lib/index.js",

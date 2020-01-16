@@ -8,6 +8,15 @@ const removeEmptyHeaders = headers => {
   return newHeaders
 }
 
+const throwIfErrors = response => {
+  if (response.error) {
+    if (response.error.message) throw new Error(response.error.message)
+    else throw new Error('Unknown jsonrpc error')
+  } else {
+    return response
+  }
+}
+
 class LotusRpcEngine {
   constructor({ apiAddress, token }) {
     this.apiAddress = apiAddress
@@ -31,6 +40,7 @@ class LotusRpcEngine {
         }),
       },
     )
+    throwIfErrors(data)
     return data.result
   }
 }
