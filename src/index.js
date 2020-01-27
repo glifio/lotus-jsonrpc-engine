@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const removeEmptyHeaders = headers => {
+export const removeEmptyHeaders = headers => {
   const newHeaders = {}
   Object.keys(headers).forEach(key => {
     if (headers[key]) newHeaders[key] = headers[key]
@@ -8,7 +8,7 @@ const removeEmptyHeaders = headers => {
   return newHeaders
 }
 
-const throwIfErrors = response => {
+export const throwIfErrors = response => {
   if (response.error) {
     if (response.error.message) throw new Error(response.error.message)
     else throw new Error('Unknown jsonrpc error')
@@ -18,9 +18,13 @@ const throwIfErrors = response => {
 }
 
 class LotusRpcEngine {
-  constructor({ apiAddress, token }) {
-    this.apiAddress = apiAddress
-    this.token = token
+  constructor(config) {
+    if (!config)
+      throw new Error(
+        'Must pass a config object to the LotusRpcEngine constructor.',
+      )
+    this.apiAddress = config.apiAddress
+    this.token = config.token
   }
 
   async request(method, ...params) {

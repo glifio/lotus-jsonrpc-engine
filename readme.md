@@ -13,10 +13,12 @@ const LotusRPCEngine = require('@openworklabs/lotus-jsonrpc-engine')
 
 const lotusJWT = 'aaaaaaaa.bbbbbbbbbbbb.i_ZZZZZZ-3xYYYYYY'
 
-const lotusRPC = new LotusRpcEngine({
+const config = {
   apiAddress: 'http://127.0.0.1:1234/rpc/v0',
   token: lotusJWT,
-})
+}
+
+const lotusRPC = new LotusRpcEngine(config)
 
 const chainHead = await lotusRPC.request('ChainHead')
 ```
