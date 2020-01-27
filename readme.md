@@ -14,6 +14,7 @@ const LotusRPCEngine = require('@openworklabs/lotus-jsonrpc-engine')
 const lotusJWT = 'aaaaaaaa.bbbbbbbbbbbb.i_ZZZZZZ-3xYYYYYY'
 
 const config = {
+  // defaults to local as seen below
   apiAddress: 'http://127.0.0.1:1234/rpc/v0',
   token: lotusJWT,
 }
@@ -48,7 +49,7 @@ const successResponse = {
 }
 ```
 
-The `result` key is the return data as specified in the Lotus api](https://github.com/filecoin-project/lotus/blob/master/api/api_full.go[]). The Lotus JSON RPC Engine will just return you the `result`, and not any of the other data.
+The `result` key is the return data as specified in the [Lotus api](https://github.com/filecoin-project/lotus/blob/master/api/api_full.go[]). The Lotus JSON RPC Engine will just return you the `result`, and not any of the other data.
 
 ```js
 const errorResponse = {
