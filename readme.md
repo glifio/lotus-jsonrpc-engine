@@ -36,6 +36,44 @@ const address = 't1jdlfl73voaiblrvn2yfivvn5ifucwwv5f26nfza'
 const balance = await lotusRPC.request('WalletBalance', address)
 ```
 
+## Handling responses
+
+When making a request to Lotus' jsonrpc server, a success response looks like:
+
+```js
+const successResponse = {
+  jsonrpc: '2.0',
+  result: 'fake response result',
+  id: 1,
+}
+```
+
+The `result` key is the return data as specified in the Lotus api](https://github.com/filecoin-project/lotus/blob/master/api/api_full.go[]). The Lotus JSON RPC Engine will just return you the `result`, and not any of the other data.
+
+```js
+const errorResponse = {
+  jsonrpc: '2.0',
+  result: '',
+  id: 1,
+  error: {
+    code: 1,
+    message: 'Specific error returned by Lotus API',
+  },
+}
+```
+
+This functionality may change, but for now, the Lotus JSON RPC Engine will throw an error if the Lotus API comes back with an error, so be sure to catch them:
+
+```js
+try {
+  // send a malformed request (need to pass an address)
+  await lotusRPC.request('WalletBalance')
+} catch (err) {
+  console.log(err)
+  // 'get actor: GetActor called on undefined address' <== error directly passed from Lotus' API
+}
+```
+
 ## Cids
 
 Several jsonrpc methods take `Cid` as arguments. We need to structure a cid as:
