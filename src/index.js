@@ -23,7 +23,7 @@ class LotusRpcEngine {
       throw new Error(
         'Must pass a config object to the LotusRpcEngine constructor.',
       )
-    this.apiAddress = config.apiAddress
+    this.apiAddress = config.apiAddress || 'http://127.0.0.1:1234/rpc/v0'
     this.token = config.token
   }
 
