@@ -1,8 +1,10 @@
-# Lotus jsonrpc engine
+# Lotus JSON-RPC engine
+
+[![Travis CI](https://travis-ci.org/openworklabs/lotus-rpc-engine.svg?branch=primary)](https://travis-ci.org/openworklabs/lotus-rpc-engine)
 
 :warning: Active development. Unstable. Breaking changes likely incoming.
 
-A convenience library for interacting with the [Lotus jsonrpc api](https://github.com/filecoin-project/lotus/blob/master/api/api_full.go). We'll be actively updating and maintaining this library as needed for our use in the [Filecoin web wallet](https://github.com/openworklabs/filecoin-web-wallet). Several of the methods we're using are documented [here](https://documenter.getpostman.com/view/4872192/SWLh5mUd?version=latest).
+A convenience library for interacting with the [Lotus JSON-RPC api](https://github.com/filecoin-project/lotus/blob/master/api/api_full.go). We'll be actively updating and maintaining this library as needed for our use in the [Filecoin web wallet](https://github.com/openworklabs/filecoin-web-wallet). Several of the methods we're using are documented [here](https://documenter.getpostman.com/view/4872192/SWLh5mUd?version=latest).
 
 ## Basic usage
 
@@ -26,11 +28,11 @@ const chainHead = await lotusRPC.request('ChainHead')
 
 ## Structuring requests
 
-This library is simply a wrapper around Lotus' jsonrpc. To send requests, follow this pattern:
+This library is simply a wrapper around Lotus' JSON-RPC. To send requests, follow this pattern:
 
-lotusRPC.request(rpcmethod, arg1, arg2....etc) where the "methodName" corresponds to each available jsonrpc method (found [here](https://github.com/filecoin-project/lotus/blob/master/api/api_full.go)). After the method name, each argument is passed to Lotus' jsonrpc in the same order.
+lotusRPC.request(rpcmethod, arg1, arg2....etc) where the "methodName" corresponds to each available JSON-RPC method (found [here](https://github.com/filecoin-project/lotus/blob/master/api/api_full.go)). After the method name, each argument is passed to Lotus' JSON-RPC in the same order.
 
-For example, the `WalletBalance` jsonrpc method takes a single argument, "address". Therefore, we should structure the request like:
+For example, the `WalletBalance` JSON-RPC method takes a single argument, "address". Therefore, we should structure the request like:
 
 ```js
 const address = 't1jdlfl73voaiblrvn2yfivvn5ifucwwv5f26nfza'
@@ -39,7 +41,7 @@ const balance = await lotusRPC.request('WalletBalance', address)
 
 ## Handling responses
 
-When making a request to Lotus' jsonrpc server, a success response looks like:
+When making a request to Lotus' JSON-RPC server, a success response looks like:
 
 ```js
 const successResponse = {
@@ -49,7 +51,7 @@ const successResponse = {
 }
 ```
 
-The `result` key is the return data as specified in the [Lotus api](https://github.com/filecoin-project/lotus/blob/master/api/api_full.go[]). The Lotus JSON RPC Engine will just return you the `result`, and not any of the other data.
+The `result` key is the return data as specified in the [Lotus api](https://github.com/filecoin-project/lotus/blob/master/api/api_full.go[]). The Lotus JSON-RPC Engine will just return you the `result`, and not any of the other data.
 
 ```js
 const errorResponse = {
@@ -63,7 +65,7 @@ const errorResponse = {
 }
 ```
 
-This functionality may change, but for now, the Lotus JSON RPC Engine will throw an error if the Lotus API comes back with an error, so be sure to catch them:
+This functionality may change, but for now, the Lotus JSON-RPC Engine will throw an error if the Lotus API comes back with an error, so be sure to catch them:
 
 ```js
 try {
@@ -77,7 +79,7 @@ try {
 
 ## Cids
 
-Several jsonrpc methods take `Cid` as arguments. We need to structure a cid as:
+Several JSON-RPC methods take `Cid` as arguments. We need to structure a cid as:
 
 ```js
 const cid = {
