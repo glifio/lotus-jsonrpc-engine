@@ -38,7 +38,6 @@ class LotusRpcEngine {
       },
       {
         headers: removeEmptyHeaders({
-          'Content-Type': 'text/plain;charset=UTF-8',
           Accept: '*/*',
           Authorization: this.token ? `Bearer ${this.token}` : null,
         }),
