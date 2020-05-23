@@ -1,8 +1,11 @@
+/**
+ * @jest-environment node
+ */
 /* eslint-env mocha */
 const { expect } = require('chai')
 const nock = require('nock')
-const LotusRpcEngine = require('../').default
-const { removeEmptyHeaders, throwIfErrors } = require('../')
+const LotusRpcEngine = require('..').default
+const { removeEmptyHeaders, throwIfErrors } = require('..')
 const expectThrowsAsync = require('./expectThrowsAsync')
 
 const successfulResponse = {
@@ -56,15 +59,14 @@ describe('LotusRpcEngine', () => {
   })
   describe('request', () => {
     const lotus = new LotusRpcEngine({
-      apiAddress: 'http://127.0.0.1:1234/rpc/v0',
+      apiAddress: 'https://proxy.openworklabs.com/rpc/v0',
     })
 
     it('passes the first argument as the jsonrpc method', done => {
       const method = 'ChainHead'
-      nock('http://127.0.0.1:1234')
+      nock('https://proxy.openworklabs.com')
         .post('/rpc/v0')
-        .reply(201, (uri, requestBody) => {
-          const body = JSON.parse(requestBody)
+        .reply(201, (uri, body) => {
           expect(body.method).to.eql(`Filecoin.${method}`)
           done()
         })
@@ -76,10 +78,9 @@ describe('LotusRpcEngine', () => {
       const method = 'FakeJsonRpcMethodWithMultipleParams'
       const param1 = 't1mbk7q6gm4rjlndfqw6f2vkfgqotres3fgicb2uq'
       const param2 = 'RIP Kobe.'
-      nock('http://127.0.0.1:1234')
+      nock('https://proxy.openworklabs.com')
         .post('/rpc/v0')
-        .reply(201, (uri, requestBody) => {
-          const body = JSON.parse(requestBody)
+        .reply(201, (uri, body) => {
           expect(body.params).to.eql([param1, param2])
           done()
         })
@@ -89,7 +90,7 @@ describe('LotusRpcEngine', () => {
 
     it('returns the result when response is successful', async () => {
       const method = 'FakeMethod'
-      nock('http://127.0.0.1:1234')
+      nock('https://proxy.openworklabs.com')
         .post('/rpc/v0')
         .reply(201, () => successfulResponse)
 
@@ -99,7 +100,7 @@ describe('LotusRpcEngine', () => {
 
     it('throws an error with the error message when response is unsuccessful', async () => {
       const method = 'FakeMethod'
-      nock('http://127.0.0.1:1234')
+      nock('https://proxy.openworklabs.com')
         .post('/rpc/v0')
         .reply(201, () => errorResponse)
 

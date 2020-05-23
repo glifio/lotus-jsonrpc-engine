@@ -1,6 +1,6 @@
 {
   "name": "@openworklabs/lotus-jsonrpc-engine",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "a convenience library for interacting with the Lotus jsonrpc",
   "main": "./dist/index.js",
   "browser": "./lib/index.js",
@@ -11,8 +11,8 @@
     "build-node": "babel ./src --out-dir ./dist --source-maps --copy-files",
     "build": "npm run build-node && npm run build-browser && npm run build-module",
     "prepublishOnly": "npm run build",
-    "test": "npm run build && aegir test",
-    "test:node": "npm run build && aegir test -t node"
+    "test": "npm run build && jest",
+    "test:watch": "npm run build && jest --watch"
   },
   "author": "",
   "license": "(Apache-2.0 OR MIT)",
@@ -25,7 +25,6 @@
     "@babel/plugin-proposal-class-properties": "^7.7.4",
     "@babel/plugin-proposal-object-rest-spread": "^7.7.4",
     "@babel/preset-env": "^7.7.4",
-    "aegir": "^20.5.1",
     "babel-eslint": "^10.0.3",
     "chai": "^4.2.0",
     "cross-env": "^6.0.3",
@@ -36,6 +35,7 @@
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.17.0",
     "eslint-plugin-react-hooks": "^1.7.0",
+    "jest": "^26.0.1",
     "mocha": "^6.2.2",
     "nock": "^11.7.2",
     "prettier": "1.19.1"

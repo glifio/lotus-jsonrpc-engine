@@ -1,17 +1,16 @@
+dist: bionic
+os: linux
 language: node_js
-cache: npm
-
+install:
+  - npm i
+cache:
+  directories:
+    - node_modules
 node_js:
   - '12'
   - '10'
 
-os:
-  - linux
-  - osx
-  - windows
-
-script: npx nyc -s npm run test:node -- --bail
-after_success: npx nyc report --reporter=text-lcov > coverage.lcov && npx codecov
+script: npm test
 
 notifications:
   email: false
