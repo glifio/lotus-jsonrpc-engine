@@ -1,6 +1,4 @@
 /* eslint-env mocha */
-const { expect } = require('chai')
-
 module.exports = async (method, errorMessage) => {
   let error = null
   try {
@@ -8,8 +6,8 @@ module.exports = async (method, errorMessage) => {
   } catch (err) {
     error = err
   }
-  expect(error).to.be.an('Error')
+  expect(error instanceof Error).toBe(true)
   if (errorMessage) {
-    expect(error.message).to.equal(errorMessage)
+    expect(error.message).toBe(errorMessage)
   }
 }

@@ -1,8 +1,6 @@
 /**
  * @jest-environment node
  */
-/* eslint-env mocha */
-const { expect } = require('chai')
 const nock = require('nock')
 const LotusRpcEngine = require('..').default
 const { removeEmptyHeaders, throwIfErrors } = require('..')
@@ -25,7 +23,7 @@ const errorResponse = {
 }
 
 describe('removeEmptyHeaders', () => {
-  it('should return an object without keys that are set to falsey values', () => {
+  test('it should return an object without keys that are set to falsey values', () => {
     const headers = {
       'Content-Type': 'text/plain;charset=UTF-8',
       Test: 'value',
@@ -33,72 +31,76 @@ describe('removeEmptyHeaders', () => {
       Authorization: null,
     }
 
-    expect(removeEmptyHeaders(headers)).to.eql({
-      'Content-Type': 'text/plain;charset=UTF-8',
-      Test: 'value',
-    })
+    expect(removeEmptyHeaders(headers).Accept).toBeUndefined()
+    expect(removeEmptyHeaders(headers).Authorization).toBeUndefined()
+    expect(removeEmptyHeaders(headers)['Content-Type']).toBeTruthy()
+    expect(removeEmptyHeaders(headers).Test).toBeTruthy()
   })
 })
 
 describe('throwIfErrors', () => {
-  it('returns responses with no errors', () => {
-    expect(throwIfErrors(successfulResponse)).to.eql(successfulResponse)
+  test('it returns responses with no errors', () => {
+    expect(throwIfErrors(successfulResponse)).toBe(successfulResponse)
   })
 
-  it('throws a descriptive error if the jsonrpc response comes back with an error', () => {
-    expect(() => throwIfErrors(errorResponse)).to.throw(
+  test('it throws a descriptive error if the jsonrpc response comes back with an error', () => {
+    expect(() => throwIfErrors(errorResponse)).toThrow(
       errorResponse.error.message,
     )
   })
 })
 
 describe('LotusRpcEngine', () => {
-  it('throws an error if no apiAddress is passed to constructor', () => {
+  test('it throws an error if no apiAddress is passed to constructor', () => {
     const instantiateLotusRpcEngine = () => new LotusRpcEngine()
-    expect(instantiateLotusRpcEngine).to.throw()
+    expect(instantiateLotusRpcEngine).toThrow()
   })
+
   describe('request', () => {
     const lotus = new LotusRpcEngine({
       apiAddress: 'https://proxy.openworklabs.com/rpc/v0',
     })
 
-    it('passes the first argument as the jsonrpc method', done => {
+    test('it passes the first argument as the jsonrpc method', done => {
       const method = 'ChainHead'
       nock('https://proxy.openworklabs.com')
         .post('/rpc/v0')
         .reply(201, (uri, body) => {
-          expect(body.method).to.eql(`Filecoin.${method}`)
+          expect(body.method).toBe(`Filecoin.${method}`)
           done()
         })
 
       lotus.request(method)
     })
 
-    it('passes the subsequent arguments as the jsonrpc params', done => {
+    test('passes the subsequent arguments as the jsonrpc params', done => {
       const method = 'FakeJsonRpcMethodWithMultipleParams'
       const param1 = 't1mbk7q6gm4rjlndfqw6f2vkfgqotres3fgicb2uq'
       const param2 = 'RIP Kobe.'
       nock('https://proxy.openworklabs.com')
         .post('/rpc/v0')
         .reply(201, (uri, body) => {
-          expect(body.params).to.eql([param1, param2])
+          expect(body.params[0]).toBe(param1)
+          expect(body.params[1]).toBe(param2)
           done()
         })
 
       lotus.request(method, param1, param2)
     })
 
-    it('returns the result when response is successful', async () => {
+    test('returns the result when response is successful', async () => {
       const method = 'FakeMethod'
       nock('https://proxy.openworklabs.com')
         .post('/rpc/v0')
-        .reply(201, () => successfulResponse)
+        .reply(201, () => {
+          return successfulResponse
+        })
 
       const response = await lotus.request(method)
-      expect(response).to.eql(successfulResponse.result)
+      expect(response).toBe(successfulResponse.result)
     })
 
-    it('throws an error with the error message when response is unsuccessful', async () => {
+    test('throws an error with the error message when response is unsuccessful', async () => {
       const method = 'FakeMethod'
       nock('https://proxy.openworklabs.com')
         .post('/rpc/v0')
