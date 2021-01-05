@@ -19,7 +19,7 @@
   "author": "",
   "license": "(Apache-2.0 OR MIT)",
   "dependencies": {
-    "axios": "0.19.2"
+    "axios": "0.21.1"
   },
   "devDependencies": {
     "@babel/cli": "7.10.4",
